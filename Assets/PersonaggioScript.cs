@@ -77,7 +77,7 @@ public class PersonaggioScript : MonoBehaviour
         else if (!isGrounded && jumpPressed && tempoDalSalto < tempoLimiteDoppioSalto && doppioSalto && personaggioIsAlive)
         {
             audioSource.Play();
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y + forzaSalto); // Velocità del salto
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y + forzaSalto/2); // Velocità del salto
             doppioSalto = false; // Disabilita il doppio salto
         }
 

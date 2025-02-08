@@ -11,6 +11,9 @@ public class LogicManagerScript : MonoBehaviour
     public GameObject menu;
     public GameObject impostazioni;
 
+    public GameObject home;
+    public GameObject restart;
+
     public int playerScore;
 
     public GameObject personaggio;
@@ -18,7 +21,9 @@ public class LogicManagerScript : MonoBehaviour
     public GameObject punteggio;
 
     public GameObject gameOverScreen;
+
     public GeneratoreMappaScript generatoreMappaScript;
+    public GeneratoreNuvoleScript generatoreNuvoleScript;
 
     public GameObject pauseButton;
 
@@ -78,19 +83,35 @@ public class LogicManagerScript : MonoBehaviour
 
     public void startGame()
     {
-        generatoreMappaScript.velocita = 2;
+        generatoreNuvoleScript.setIsPaused(false);
+        generatoreMappaScript.velocita = 3;
         gameStartScreen.SetActive(false);
         personaggio.SetActive(true);
         punteggio.GetComponent<Text>().fontSize = 196;
         punteggio.GetComponent<Text>().text = playerScore.ToString();
         pauseButton.GetComponentInChildren<Text>().fontSize = 64;
         pauseButton.GetComponentInChildren<Text>().text = "Pausa";
+        personaggio.GetComponent<Rigidbody2D>().simulated = true;
     }
 
     public void pauseGame()
     {
         menu.SetActive(false);
         impostazioni.SetActive(true);
+        if (personaggio.active && personaggio.GetComponent<PersonaggioScript>().personaggioIsAlive)
+        {
+            home.SetActive(true);
+            restart.SetActive(true);
+        }
+        else
+        {
+            home.SetActive(false);
+            restart.SetActive(false);
+        }
+        if (personaggio.active && personaggio.GetComponent<PersonaggioScript>().personaggioIsAlive)
+        {
+            generatoreNuvoleScript.setIsPaused(true);
+        }
         generatoreMappaScript.pause();
         personaggio.GetComponent<Animator>().enabled = false;
         personaggio.GetComponent<Rigidbody2D>().simulated = false;
@@ -100,8 +121,9 @@ public class LogicManagerScript : MonoBehaviour
     {
         impostazioni.SetActive(false);
         menu.SetActive(true);
-        if(personaggio.active && personaggio.GetComponent<PersonaggioScript>().personaggioIsAlive){
-            generatoreMappaScript.velocita = 2;
+        if (personaggio.active && personaggio.GetComponent<PersonaggioScript>().personaggioIsAlive){
+            generatoreMappaScript.velocita = 3;
+            generatoreNuvoleScript.setIsPaused(false);
         }
         personaggio.GetComponent<Animator>().enabled = true;
         personaggio.GetComponent<Rigidbody2D>().simulated = true;
@@ -109,6 +131,8 @@ public class LogicManagerScript : MonoBehaviour
 
     public void homePage()
     {
+        menu.SetActive(true);
+        impostazioni.SetActive(false);
         gameOverScreen.SetActive(false);
         gameStartScreen.SetActive(true);
         personaggio.SetActive(false);
@@ -117,13 +141,18 @@ public class LogicManagerScript : MonoBehaviour
         punteggio.GetComponent<Text>().text = "Record: " + GetRecord();
         playerScore = 0;
         generatoreMappaScript.restart();
+        generatoreNuvoleScript.setIsPaused(false);
     }
 
     public void restartGame()
     {
         gameOverScreen.SetActive(false);
+        impostazioni.SetActive(false);
+        menu.SetActive(true);
+        personaggio.GetComponent<Rigidbody2D>().simulated = true;
         generatoreMappaScript.restart();
-        generatoreMappaScript.velocita = 2;
+        generatoreMappaScript.velocita = 3;
+        generatoreNuvoleScript.setIsPaused(false);
         personaggio.GetComponent<PersonaggioScript>().Reborn();
         playerScore = 0;
         punteggio.GetComponent<Text>().fontSize = 196;
