@@ -17,7 +17,7 @@ public class GeneratoreNuvoleScript : MonoBehaviour
     {
         isPaused = false;
         nuvoleInstanziate = new List<GameObject>();
-        nuvoleInstanziate.Add(Instantiate(nuvola, new Vector3(11, Random.Range(0f, 6f)-2f, 1), Quaternion.identity));
+        nuvoleInstanziate.Add(Instantiate(nuvola, new Vector3(15, Random.Range(0f, 6f)-2f, 1), Quaternion.identity));
         timer = 0;
     }
 
@@ -31,7 +31,7 @@ public class GeneratoreNuvoleScript : MonoBehaviour
         }
         else
         {
-            nuvoleInstanziate.Add(Instantiate(nuvola, new Vector3(11, Random.Range(0f, 6f) - 2f, 1), Quaternion.identity));
+            nuvoleInstanziate.Add(Instantiate(nuvola, new Vector3(15, Random.Range(0f, 6f) - 2f, 1), Quaternion.identity));
             timer = 0;
         }
 
